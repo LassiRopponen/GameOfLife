@@ -3,8 +3,8 @@ package GameLogic;
 import java.util.Arrays;
 
 public class Cell {
-    int x;
-    int y;
+    public int x;
+    public int y;
     boolean[] neighbors;
     int alive_neighbors;
 
