@@ -7,30 +7,22 @@ import java.util.Collection;
 public class Game {
     private HashMap<String, Cell> alive_cells;
 
-    public Game(String[] initial_cells) {
+    public Game() {
         this.alive_cells = new HashMap<>();
-        for (String cell_str : initial_cells) {
-            String[] parts = cell_str.split(",");
-            int x = Integer.parseInt(parts[0]);
-            int y = Integer.parseInt(parts[1]);
-            Cell cell = new Cell(x, y);
-            String key = x + "," + y;
-            this.alive_cells.put(key, cell);
-        }
-
-        for (Cell cell : this.alive_cells.values()) {
-            alert_neighbors(cell, this.alive_cells, true);
-        }
     }
 
-    public Collection<Cell> iterate(int generations) {
-        for (int generation = 0; generation < generations; generation++) {
-            game_loop(this.alive_cells);
-        }
+    public void add_cell(int x, int y) {
+        String key = x + "," + y;
+        Cell cell = new Cell(x, y);
+        this.alive_cells.put(key, cell);
+        alert_neighbors(cell, this.alive_cells, true);
+    }
+
+    public Collection<Cell> get_cells() {
         return this.alive_cells.values();
     }
 
-    void game_loop(HashMap<String, Cell> alive_cells) {
+    public void game_loop(HashMap<String, Cell> alive_cells) {
         HashMap<String, Cell> to_alive = new HashMap<>();
         ArrayList<Cell> to_dead = new ArrayList<>();
 

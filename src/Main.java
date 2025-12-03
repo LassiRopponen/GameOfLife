@@ -1,23 +1,24 @@
-import java.util.Arrays;
-import java.util.Collection;
 import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 
 import GameLogic.*;
-import GUI.GameWindow;
+import GUI.*;
 
 class Main {
+    static Game game;
+    static GameWindow window;
+
     public static void main(String[] args) {
-        int generations = Integer.parseInt(args[0]);
-        Game game = new Game(Arrays.copyOfRange(args, 1, args.length));
-        Collection<Cell> result = game.iterate(generations);
-        System.out.println(result);
+        game = new Game();
+        window = new GameWindow();
+        window.addMouseListener(new MouseHandler(game, window));
+
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Game of Life");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new GameWindow(result));
+            frame.add(window);
             frame.pack();
             frame.setVisible(true);
         });
-    }    
+    }
 }

@@ -11,9 +11,13 @@ import GameLogic.Cell;
 public class GameWindow extends JPanel {
     private Collection<Cell> cells;
 
-    public GameWindow(Collection<Cell> cells) {
+    public GameWindow() {
         this.setBackground(Color.WHITE);
+    }
+
+    public void update_cells(Collection<Cell> cells) {
         this.cells = cells;
+        repaint();
     }
 
     @Override
@@ -33,10 +37,13 @@ public class GameWindow extends JPanel {
         for (int j = 0; j < height; j += 25) {
             g.drawLine(0, j, width, j);
         }
-        for (Cell cell : cells) {
-            int x = ((width/25)/2 + cell.getX()) * 25;
-            int y = ((height/25)/2 - cell.getY()) * 25;
-            g.fillRect(x, y, 25, 25);
+        if (cells != null) {
+            g.setColor(Color.YELLOW);
+            for (Cell cell : cells) {
+                int x = ((width/25)/2 + cell.getX()) * 25;
+                int y = ((height/25)/2 - cell.getY()) * 25;
+                g.fillRect(x, y, 25, 25);
+            }
         }
     }
 }
