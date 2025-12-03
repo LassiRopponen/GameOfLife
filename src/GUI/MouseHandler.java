@@ -18,7 +18,12 @@ public class MouseHandler extends MouseAdapter {
         public void mouseClicked(MouseEvent e) {
             int x = (e.getX() / 25) - ((window.getWidth() / 25) / 2);
             int y = ((window.getHeight() / 25) / 2) - (e.getY() / 25);
-            game.add_cell(x, y);
+            if (game.cell_exists(x, y)) {
+                game.remove_cell(x, y);
+            }
+            else {
+                game.add_cell(x, y);
+            }
             window.update_cells(game.get_cells());
         }
     }

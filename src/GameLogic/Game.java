@@ -19,6 +19,20 @@ public class Game {
         alert_neighbors(cell, true);
     }
 
+    public void remove_cell(int x, int y) {
+        String key = x + "," + y;
+        Cell cell = alive_cells.get(key);
+        if (cell != null) {
+            alive_cells.remove(key);
+            alert_neighbors(cell, false);
+        }
+    }
+
+    public boolean cell_exists(int x, int y) {
+        String key = x + "," + y;
+        return alive_cells.containsKey(key);
+    }
+
     public Collection<Cell> get_cells() {
         return alive_cells.values();
     }
