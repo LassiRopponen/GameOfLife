@@ -12,6 +12,8 @@ class Main {
         game = new Game();
         window = new GameWindow();
         window.addMouseListener(new MouseHandler(game, window));
+        window.addKeyListener(new KeyHandler(game, window));
+        window.setFocusable(true);
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Game of Life");
