@@ -7,30 +7,37 @@ import java.util.Collection;
 public class Game {
     private HashMap<String, Cell> alive_cells;
 
-    public Game(String[] initial_cells) {
+    public Game() {
         this.alive_cells = new HashMap<>();
-        for (String cell_str : initial_cells) {
-            String[] parts = cell_str.split(",");
-            int x = Integer.parseInt(parts[0]);
-            int y = Integer.parseInt(parts[1]);
-            Cell cell = new Cell(x, y);
-            String key = x + "," + y;
-            this.alive_cells.put(key, cell);
-        }
+    }
 
-        for (Cell cell : this.alive_cells.values()) {
-            alert_neighbors(cell, this.alive_cells, true);
+    public void add_cell(int x, int y) {
+        String key = x + "," + y;
+        Cell cell = new Cell(x, y);
+        alive_cells.put(key, cell);
+        check_neighbors(cell);
+        alert_neighbors(cell, true);
+    }
+
+    public void remove_cell(int x, int y) {
+        String key = x + "," + y;
+        Cell cell = alive_cells.get(key);
+        if (cell != null) {
+            alive_cells.remove(key);
+            alert_neighbors(cell, false);
         }
     }
 
-    public Collection<Cell> iterate(int generations) {
-        for (int generation = 0; generation < generations; generation++) {
-            game_loop(this.alive_cells);
-        }
-        return this.alive_cells.values();
+    public boolean cell_exists(int x, int y) {
+        String key = x + "," + y;
+        return alive_cells.containsKey(key);
     }
 
-    void game_loop(HashMap<String, Cell> alive_cells) {
+    public Collection<Cell> get_cells() {
+        return alive_cells.values();
+    }
+
+    public void game_loop() {
         HashMap<String, Cell> to_alive = new HashMap<>();
         ArrayList<Cell> to_dead = new ArrayList<>();
 
@@ -69,18 +76,18 @@ public class Game {
             if (cell.alive_neighbors == 3) {
                 String key = cell.x + "," + cell.y;
                 alive_cells.put(key, cell);
-                alert_neighbors(cell, alive_cells, true);
+                alert_neighbors(cell, true);
             }
         }
 
         for (Cell cell : to_dead) {
             String key = cell.x + "," + cell.y;
             alive_cells.remove(key);
-            alert_neighbors(cell, alive_cells, false);
+            alert_neighbors(cell, false);
         }
     }
 
-    void alert_neighbors(Cell cell, HashMap<String, Cell> alive_cells, boolean status) {
+    void alert_neighbors(Cell cell, boolean status) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (i == 1 && j == 1) {
@@ -90,6 +97,21 @@ public class Game {
                 Cell neighbor_cell = alive_cells.get(key);
                 if (neighbor_cell != null) {
                     neighbor_cell.neighbors[(2-i) + (2-j)*3] = status;
+                }
+            }
+        }
+    }
+
+    void check_neighbors(Cell cell) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (i == 1 && j == 1) {
+                    continue;
+                }
+                String key = (cell.x - 1 + i) + "," + (cell.y - 1 + j);
+                Cell neighbor_cell = alive_cells.get(key);
+                if (neighbor_cell != null) {
+                    cell.neighbors[i + j*3] = true;
                 }
             }
         }

@@ -19,4 +19,12 @@ public class Cell {
     public String toString() {
         return this.x + "," + this.y;
     }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
 }
